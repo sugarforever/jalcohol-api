@@ -1,0 +1,14 @@
+server:
+  port: 7777
+
+logging:
+  config: classpath:logback.xml
+
+app:
+  config:
+    codoon:
+      appKey: ''
+      appSecret: ''
+      redirectURL: 'http://localhost:8080/codoon/get_code'
+      accessTokenURL: 'https://openapi.codoon.com/token'
+      authorizeURL: 'http://api.codoon.com/authorize?scope=user%2Csports&redirect_uri=http%3A%2F%2Flocalhost%2Fget_code&response_type=code&client_id=3d1602888d5111e29f42782bcb058632'
