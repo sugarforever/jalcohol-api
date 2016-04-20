@@ -1,11 +1,11 @@
 # jalcohol-api
 
-Before running jalcohol-api, you need to have the following installed:
+## Before running jalcohol-api, you need to have the following installed.
 1. Java 1.8
 2. Maven
 3. Git
 
-How to run it?
+## How to run it?
 1. Execute git clone https://github.com/sugarforever/jalcohol-api.git
 2. Execute mvn spring-boot:run
 
