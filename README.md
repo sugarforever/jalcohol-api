@@ -17,5 +17,4 @@ Click '通过咕咚登录授权' to authorize your codoon sports data access to 
 
 Visit ```http://localhost:9527/api/codoon/call?method=<get|post>&api=<codoon_api_method_name>``` to call codoon API and get JSON response.
 
-For Example:
-```http://localhost:9527/api/codoon/call?method=get&api=verify_credentials```
+For Example: ```http://localhost:9527/api/codoon/call?method=get&api=verify_credentials```
