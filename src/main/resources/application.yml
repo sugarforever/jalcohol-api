@@ -8,7 +8,7 @@ app:
   config:
     codoon:
       appKey: '3d1602888d5111e29f42782bcb058632'
-      appSecret: ''
+      appSecret: '3d1606d48d5111e29f42782bcb058632'
       redirectURL: 'http://localhost:9527/authenticate'
       accessTokenURL: 'https://openapi.codoon.com/token'
       authorizeURL: 'http://openapi.codoon.com/authorize'
