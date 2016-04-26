@@ -28,6 +28,7 @@
 
     <logger name="org.springframework.web" level="WARN" />
     <logger name="org.hibernate" level="WARN" />
+    <logger name="com.jalcoholapi" level="DEBUG" />
 
     <!-- 日志输出级别 -->
     <root level="INFO">

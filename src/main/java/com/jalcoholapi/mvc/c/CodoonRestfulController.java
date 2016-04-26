@@ -1,6 +1,10 @@
 package com.jalcoholapi.mvc.c;
 
+import com.jalcoholapi.mvc.m.CodoonNotificationForm;
 import com.jalcoholapi.mvc.m.CodoonToken;
+import com.jalcoholapi.persistence.model.CodoonNotification;
+import com.jalcoholapi.service.CodoonNotificationService;
+import com.jalcoholapi.service.CodoonService;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -9,11 +13,13 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  * Created by weiliyang on 7/24/15.
@@ -38,64 +44,25 @@ public class CodoonRestfulController {
     @Value("${app.config.codoon.accessTokenURL}")
     private String codoonAccessTokenURL;
 
+    @Autowired
+    private CodoonService codoonService;
+    @Autowired
+    private CodoonNotificationService codoonNotificationService;
+
     @RequestMapping(value = "/token")
     public Object getToken(HttpSession session) {
-        return session.getAttribute("codoonToken");
+        return session.getAttribute("userToken");
     }
 
     @RequestMapping(value = "/call", method = RequestMethod.POST)
     public Object postCall(@RequestParam String method, @RequestParam String api, @RequestBody(required = false) String data, @RequestParam String nekot) throws Exception {
-        String apiURL = codoonApiBaseURL + api;
-
-        JsonNode responseJsonNode = null;
-
-        if (StringUtils.isNotBlank(nekot)) {
-            HttpRequest request = null;
-            if ("get".equals(method)) {
-                request = Unirest.get(apiURL);
-            } else if ("post".equals(method)) {
-                HttpRequestWithBody requestWithBody = Unirest.post(apiURL);
-                if (data != null) {
-                    requestWithBody.body(data);
-                }
-                request = requestWithBody;
-            }
-
-            if (request != null) {
-                HttpResponse<JsonNode> response = request
-                        .header("accept", "application/json")
-                        .header("Authorization", "Bearer " + nekot)
-                        .asJson();
-                responseJsonNode = response.getBody();
-            }
-        }
-
+        JsonNode responseJsonNode = codoonService.callAPI(method, api, data, nekot, JsonNode.class);
         return responseJsonNode == null ? "" : responseJsonNode.toString();
     }
 
     @RequestMapping(value = "/call", method = RequestMethod.GET)
     public Object getCall(@RequestParam String method, @RequestParam String api, @RequestParam String nekot) throws Exception {
-        String apiURL = codoonApiBaseURL + api;
-
-        JsonNode responseJsonNode = null;
-
-        if (StringUtils.isNotBlank(nekot)) {
-            HttpRequest request = null;
-            if ("get".equals(method)) {
-                request = Unirest.get(apiURL);
-            } else if ("post".equals(method)) {
-                request = Unirest.post(apiURL);
-            }
-
-            if (request != null) {
-                HttpResponse<JsonNode> response = request
-                        .header("accept", "application/json")
-                        .header("Authorization", "Bearer " + nekot)
-                        .asJson();
-                responseJsonNode = response.getBody();
-            }
-        }
-
+        JsonNode responseJsonNode = codoonService.callAPI(method, api, null, nekot, JsonNode.class);
         return responseJsonNode == null ? "" : responseJsonNode.toString();
     }
 
@@ -118,5 +85,16 @@ public class CodoonRestfulController {
         }
 
         return codoonToken;
+    }
+
+    @RequestMapping(value = "/notify/", method = RequestMethod.POST)
+    public Object notify(@ModelAttribute CodoonNotificationForm codoonNotificationForm) {
+        logger.debug("Codoon notification received: " + codoonNotificationForm.toString());
+        if (codoonNotificationForm.getStart_time() == null)
+            codoonNotificationForm.setStart_time("");
+        if (codoonNotificationForm.getEnd_time() == null)
+            codoonNotificationForm.setEnd_time("");
+        CodoonNotification notification = codoonNotificationService.save(codoonNotificationForm);
+        return notification;
     }
 }
