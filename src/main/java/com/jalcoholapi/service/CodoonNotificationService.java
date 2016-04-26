@@ -3,13 +3,11 @@ package com.jalcoholapi.service;
 import com.jalcoholapi.mvc.m.CodoonNotificationForm;
 import com.jalcoholapi.persistence.model.CodoonNotification;
 import com.jalcoholapi.persistence.repository.CodoonNotificationRepository;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by weiliyang on 4/21/16.
@@ -24,20 +22,28 @@ public class CodoonNotificationService {
 
     public CodoonNotification save(CodoonNotificationForm codoonNotificationForm) {
         CodoonNotification notification = null;
-        if (codoonNotificationForm != null) {
-            notification = new CodoonNotification();
-            CodoonNotification.CodoonNotificationPK pk = new CodoonNotification.CodoonNotificationPK();
-            pk.setCatalog(codoonNotificationForm.getCatalog());
-            pk.setEndTime(codoonNotificationForm.getEnd_time());
-            pk.setResourceId(codoonNotificationForm.getResource_id());
-            pk.setStartTime(codoonNotificationForm.getStart_time());
-            pk.setUserId(codoonNotificationForm.getUser_id());
-            notification.setCodoonNotificationPK(pk);
+        if (codoonNotificationForm != null && StringUtils.isNotEmpty(codoonNotificationForm.getResource_id())) {
+            Long resourceId = null;
 
-            List<CodoonNotification> c = codoonNotificationRepository.findByCodoonNotificationPK(pk);
-            if (c.size() > 0) {
+            try {
+                resourceId = Long.parseLong(codoonNotificationForm.getResource_id());
+            } catch (NumberFormatException ex) {
+                logger.error(ex.getMessage(), ex);
+                return notification;
+            }
+
+            notification = new CodoonNotification();
+
+            notification.setResourceId(resourceId);
+            notification.setCatalog(codoonNotificationForm.getCatalog());
+            notification.setEndTime(codoonNotificationForm.getEnd_time());
+            notification.setStartTime(codoonNotificationForm.getStart_time());
+            notification.setUserId(codoonNotificationForm.getUser_id());
+
+            CodoonNotification c = codoonNotificationRepository.findOne(resourceId);
+            if (c != null) {
                 logger.warn("Codoon notification already exists.");
-                notification = c.get(0);
+                notification = c;
             } else {
                 notification = codoonNotificationRepository.save(notification);
             }

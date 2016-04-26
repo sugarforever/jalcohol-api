@@ -14,5 +14,4 @@ import java.util.List;
 @Repository
 public interface CodoonNotificationRepository extends JpaRepository<CodoonNotification, Long> {
 
-    public List findByCodoonNotificationPK(CodoonNotification.CodoonNotificationPK pk);
 }

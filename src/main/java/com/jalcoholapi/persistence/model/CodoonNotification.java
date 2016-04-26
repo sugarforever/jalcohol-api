@@ -13,84 +13,54 @@ import java.io.Serializable;
 @Table(name = "t_codoon_notification")
 public class CodoonNotification {
 
-    @EmbeddedId
-    private CodoonNotificationPK codoonNotificationPK;
+    @Id
+    private Long resourceId;
+    @Column(nullable = false)
+    private String userId;
+    @Column(nullable = false)
+    private String catalog;
+    @Column(nullable = true)
+    private String startTime;
+    @Column(nullable = true)
+    private String endTime;
 
-    public CodoonNotificationPK getCodoonNotificationPK() {
-        return codoonNotificationPK;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCodoonNotificationPK(final CodoonNotificationPK codoonNotificationPK) {
-        this.codoonNotificationPK = codoonNotificationPK;
+    public void setUserId(final String userId) {
+        this.userId = userId;
     }
 
-    @Embeddable
-    public static class CodoonNotificationPK implements Serializable {
+    public String getCatalog() {
+        return catalog;
+    }
 
-        @Column(nullable = false)
-        private String userId;
-        @Column(nullable = false)
-        private String catalog;
-        @Column(nullable = false)
-        private String resourceId;
-        @Column(nullable = true)
-        private String startTime;
-        @Column(nullable = true)
-        private String endTime;
+    public void setCatalog(final String catalog) {
+        this.catalog = catalog;
+    }
 
-        public String getUserId() {
-            return userId;
-        }
+    public Long getResourceId() {
+        return resourceId;
+    }
 
-        public void setUserId(final String userId) {
-            this.userId = userId;
-        }
+    public void setResourceId(final Long resourceId) {
+        this.resourceId = resourceId;
+    }
 
-        public String getCatalog() {
-            return catalog;
-        }
+    public String getStartTime() {
+        return startTime;
+    }
 
-        public void setCatalog(final String catalog) {
-            this.catalog = catalog;
-        }
+    public void setStartTime(final String startTime) {
+        this.startTime = startTime;
+    }
 
-        public String getResourceId() {
-            return resourceId;
-        }
+    public String getEndTime() {
+        return endTime;
+    }
 
-        public void setResourceId(final String resourceId) {
-            this.resourceId = resourceId;
-        }
-
-        public String getStartTime() {
-            return startTime;
-        }
-
-        public void setStartTime(final String startTime) {
-            this.startTime = startTime;
-        }
-
-        public String getEndTime() {
-            return endTime;
-        }
-
-        public void setEndTime(final String endTime) {
-            this.endTime = endTime;
-        }
-
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder().append(userId).append(catalog).append(resourceId).append(startTime).append(endTime).toHashCode();
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj instanceof CodoonNotificationPK) {
-                final CodoonNotificationPK that = (CodoonNotificationPK) obj;
-                return new EqualsBuilder().append(this.userId, that.userId).append(this.catalog, that.catalog).append(this.resourceId, that.resourceId).append(this.startTime, that.startTime).append(this.endTime, that.endTime).isEquals();
-            } else {
-                return false;
-            }
-        }
+    public void setEndTime(final String endTime) {
+        this.endTime = endTime;
     }
 }
