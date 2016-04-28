@@ -34,4 +34,8 @@ public class UserTokenService {
 
         return userToken;
     }
+
+    public UserToken findByUserId(String userId) {
+        return userTokenRepository.findByUserId(userId);
+    }
 }

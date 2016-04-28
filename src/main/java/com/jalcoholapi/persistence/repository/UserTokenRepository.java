@@ -13,4 +13,5 @@ import javax.transaction.Transactional;
 @Repository
 public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
 
+    public UserToken findByUserId(String userId);
 }

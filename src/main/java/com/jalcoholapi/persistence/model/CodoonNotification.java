@@ -1,10 +1,6 @@
 package com.jalcoholapi.persistence.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by weiliyang on 4/22/16.
@@ -14,7 +10,11 @@ import java.io.Serializable;
 public class CodoonNotification {
 
     @Id
-    private Long resourceId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String resourceId;
     @Column(nullable = false)
     private String userId;
     @Column(nullable = false)
@@ -23,6 +23,16 @@ public class CodoonNotification {
     private String startTime;
     @Column(nullable = true)
     private String endTime;
+    @Column(nullable = false)
+    private Boolean local;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -40,11 +50,11 @@ public class CodoonNotification {
         this.catalog = catalog;
     }
 
-    public Long getResourceId() {
+    public String getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(final Long resourceId) {
+    public void setResourceId(final String resourceId) {
         this.resourceId = resourceId;
     }
 
@@ -62,5 +72,13 @@ public class CodoonNotification {
 
     public void setEndTime(final String endTime) {
         this.endTime = endTime;
+    }
+
+    public Boolean getLocal() {
+        return local;
+    }
+
+    public void setLocal(final Boolean local) {
+        this.local = local;
     }
 }
