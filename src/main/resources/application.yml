@@ -13,6 +13,11 @@ app:
       accessTokenURL: 'https://openapi.codoon.com/token'
       authorizeURL: 'http://openapi.codoon.com/authorize'
       apiBaseURL: 'https://openapi.codoon.com/api/'
+      crawler:
+        agentName: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
+        loginURL: 'http://sso.codoon.com/login'
+        #userName: '18608006515'
+        #password: 'qstring1'
 
 spring:
   datasource:

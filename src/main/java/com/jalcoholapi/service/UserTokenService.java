@@ -7,6 +7,9 @@ import com.jalcoholapi.persistence.repository.UserTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by weiliyang on 4/21/16.
  */
@@ -37,5 +40,9 @@ public class UserTokenService {
 
     public UserToken findByUserId(String userId) {
         return userTokenRepository.findByUserId(userId);
+    }
+
+    public List findAll() {
+        return new ArrayList(userTokenRepository.findAll());
     }
 }
